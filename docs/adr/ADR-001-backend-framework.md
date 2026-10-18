@@ -1,6 +1,6 @@
 # ADR-001: Backend framework: Node.js + Express vs Laravel with Octane
 
-- **Status:** Proposed (requires the First Party's written approval under Annex Section 17)
+- **Status:** Accepted by the Executor. **First Party written approval under Annex Section 17: not yet obtained.** The annex requires prior written approval to replace the named backend technology.
 - **Annex reference:** 17 (approved technologies), 18 (capacity), 19 (isolation of heavy tasks), 23 (5-month schedule), 33 (12-month warranty)
 - **Type:** Locked once approved. This decision gates the rest.
 

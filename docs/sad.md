@@ -16,7 +16,9 @@ _To be added in chunk 8._
 |---|---|
 | Backend framework | [ADR-001](adr/ADR-001-backend-framework.md) |
 | Database | [ADR-002](adr/ADR-002-database-postgresql.md) |
-| Data access and migrations | [ADR-003](adr/ADR-003-data-access-and-migrations.md) |
+| Data access and migrations (Prisma) | [ADR-003](adr/ADR-003-data-access-and-migrations.md) |
+| Express with hexagonal modules, not NestJS | [ADR-009](adr/ADR-009-express-vs-nestjs.md) |
+| Modular monolith with extractable modules | [ADR-010](adr/ADR-010-modular-monolith.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
 | Classification trees | [ADR-006](adr/ADR-006-classification-trees.md) |

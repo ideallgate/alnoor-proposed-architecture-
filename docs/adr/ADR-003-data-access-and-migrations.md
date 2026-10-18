@@ -1,6 +1,6 @@
 # ADR-003: Data access and migrations
 
-- **Status:** Proposed
+- **Status:** Accepted (Executor decision)
 - **Annex reference:** 17 (migrations in repository), 24 (migration files)
 - **Type:** Open
 
@@ -8,16 +8,17 @@
 The model needs recursive queries, JSONB operators and versioned tables. Migrations must live in the repository and be handed over cleanly.
 
 ## Options considered
-| | Drizzle | Prisma | Kysely + SQL migrations | TypeORM |
+| | Prisma | Drizzle | Kysely + SQL migrations | TypeORM |
 |---|---|---|---|---|
-| TypeScript types | Schema in TS, SQL-like queries | Generated client, very good | Excellent, SQL-shaped queries | Decorators, weaker inference |
-| Recursive CTEs, JSONB operators | Raw SQL helpers, fine | Mostly raw SQL | Natural | Raw SQL |
-| Migrations in repo | Yes, plain SQL files | Yes, plain SQL files | Separate tool needed | Yes |
-| Weight and speed | Light | Heavier | Light | Medium |
-| Learning curve for a new supplier | Low | Lowest | Medium | Medium |
+| TypeScript types | Generated client, very good | Schema in TS, SQL-like queries | Excellent, SQL-shaped queries | Decorators, weaker inference |
+| Recursive CTEs, JSONB operators | Raw SQL escape hatch | Raw SQL helpers, fine | Natural | Raw SQL |
+| Migrations in repo | Yes, SQL migration files | Yes, plain SQL files | Separate tool needed | Yes |
+| Weight and speed | Heavier | Light | Light | Medium |
+| Learning curve for a new supplier | Lowest | Low | Medium | Medium |
 
-## Decision (lean)
-Drizzle, because SQL stays close at hand for trees, versions and JSONB.
+## Decision
+Prisma, as part of our proven stack. Recursive CTEs and other advanced queries use its raw-query support, kept inside the data-access layer.
 
 ## Consequences
-- Trade-off we accept: a younger ecosystem than Prisma or TypeORM. Prisma is the safer handover choice if the client values familiarity over control.
+- Benefits: lowest handover friction, strong generated types, migrations kept in the repository.
+- Trade-off we accept: heavier than Drizzle or Kysely, and advanced SQL goes through raw queries.
