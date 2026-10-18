@@ -2,7 +2,7 @@
 
 - **Status:** Proposed
 - **Annex reference:** 17 (MySQL or PostgreSQL), 2, 3
-- **Type:** Locked (annex allows either; we pick one)
+- **Type:** Open (annex allows MySQL or PostgreSQL; this is our selection)
 
 ## Context
 The content model is highly relational (hadith, narrations, narrators, explanations, sources) and annotated (gharib positions, sync points, trees, versions).

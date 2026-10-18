@@ -2,7 +2,7 @@
 
 - **Status:** Accepted by the Executor. **First Party written approval under Annex Section 17: not yet obtained.** The annex requires prior written approval to replace the named backend technology.
 - **Annex reference:** 17 (approved technologies), 18 (capacity), 19 (isolation of heavy tasks), 23 (5-month schedule), 33 (12-month warranty)
-- **Type:** Locked once approved. This decision gates the rest.
+- **Type:** Open (our technical selection). This decision underpins the rest.
 
 > **Stub.** The evidence below is summarised from the benchmark kit and verification reports. The full options table and wording are to be finalised in the next session.
 
