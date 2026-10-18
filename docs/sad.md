@@ -6,7 +6,16 @@ Status: skeleton. Sections fill in as each chunk is agreed. Decisions are record
 Scope from Annex Section 1. Capacity targets from Section 18: 10,000 registered users, 1,500 concurrent sessions at peak, 1,500+ hours of audio, 2 TB initial storage; API p95 under 500 ms, hadith screen under 1 s, search under 1 s, availability 99.5% monthly.
 
 ## 2. Constraints
-Annex technology list (Section 17) unless approved otherwise; 5-month schedule; 12-month warranty; code in First Party repositories from day one; handover without dependence on the Executor (Sections 24, 26).
+Business and delivery rules that shape the design: the functional scope (Sections 1-16), capacity and quality targets (Section 18), the approval cycle and versioning rules (Sections 3, 15), security and privacy (Section 20), the 5-month schedule, the 12-month warranty, code in First Party repositories from day one, and handover without dependence on the Executor (Sections 24, 26).
+
+Technology is the Executor's selection, recorded in the decisions below. Where it differs from the technology list in Annex Section 17, it appears in the deviation register.
+
+### Deviation register (Annex Section 17)
+| Annex names | Our selection | Decision | First Party confirmation |
+|---|---|---|---|
+| Backend: Laravel | Node.js + Express, TypeScript | [ADR-001](adr/ADR-001-backend-framework.md), [ADR-009](adr/ADR-009-express-vs-nestjs.md) | To be recorded |
+| Admin dashboard: Vue 3 | React + TypeScript | [ADR-011](adr/ADR-011-admin-dashboard-react.md) | To be recorded |
+| Queues: Laravel Queues or equivalent | BullMQ on Redis | To be written | To be recorded |
 
 ## 3. Context and scope (C4 level 1)
 _To be added in chunk 8._
@@ -19,6 +28,7 @@ _To be added in chunk 8._
 | Data access and migrations (Prisma) | [ADR-003](adr/ADR-003-data-access-and-migrations.md) |
 | Express with hexagonal modules, not NestJS | [ADR-009](adr/ADR-009-express-vs-nestjs.md) |
 | Modular monolith with extractable modules | [ADR-010](adr/ADR-010-modular-monolith.md) |
+| Admin dashboard: React | [ADR-011](adr/ADR-011-admin-dashboard-react.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
 | Classification trees | [ADR-006](adr/ADR-006-classification-trees.md) |

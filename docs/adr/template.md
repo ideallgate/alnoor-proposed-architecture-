@@ -2,7 +2,7 @@
 
 - **Status:** Proposed | Accepted | Superseded by ADR-0xx
 - **Annex reference:** Section(s)
-- **Type:** Locked (annex or client-visible commitment) | Open (our recommendation)
+- **Type:** Fixed (a business rule or capacity target from the annex) | Open (our technical selection)
 
 ## Context
 The need and the constraints behind it.
