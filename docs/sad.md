@@ -30,7 +30,7 @@ _To be added in chunk 8._
 | Modular monolith with extractable modules | [ADR-010](adr/ADR-010-modular-monolith.md) |
 | Admin dashboard: React | [ADR-011](adr/ADR-011-admin-dashboard-react.md) |
 | Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
-| Arabic search engine (provisional) | [ADR-013](adr/ADR-013-arabic-search.md) |
+| Arabic search engine: OpenSearch recommended (proposed) | [ADR-013](adr/ADR-013-arabic-search.md) |
 | Radio Noor: scheduled core, in-app baseline, optional live stream | [ADR-014](adr/ADR-014-radio-noor.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
@@ -55,7 +55,8 @@ _Pending._
 
 ## 10. Risks and open points
 - ADR-001 needs the First Party's written approval.
-- Benchmark evidence comes from a single laptop; production-like performance tests are required before acceptance.
+- Benchmark evidence comes from a single laptop; production-like performance tests are required before acceptance. The search benchmark is incomplete (no reversed-order pass, reduced PostgreSQL run, Meilisearch 50x not finished); see [ADR-013](adr/ADR-013-arabic-search.md).
+- The search benchmark corpus is a public dataset with unverified redistribution rights. We need the First Party's real sample corpus, query list and agreed data volume to re-check the search decision.
 - Arabic search ranking and the ta marbuta/ha rule need review and approval by the First Party's scholars ([ADR-013](adr/ADR-013-arabic-search.md)). This is a dependency for Phase 2 acceptance and should be scheduled early.
 
 ## 11. Glossary
