@@ -126,6 +126,7 @@ sequenceDiagram
   Admin->>API: Save draft
   API->>DB: Insert version (status draft)
   Editor->>Admin: Submit for review
+  Admin->>API: Submit version
   API->>DB: status = under review
   Reviewer->>Admin: Approve and publish
   Admin->>API: Publish version
@@ -164,7 +165,7 @@ sequenceDiagram
   App->>API: GET radio now-playing
   API->>DB: Read schedule and published audio
   API-->>App: Current item, offset, next item, server time
-  App->>App: Start playback at the offset; refresh at the item end
+  App->>App: Start playback at the offset, refresh at the item end
 ```
 The schedule is computed from the playlist plus server time, so all listeners hear the same item. Unpublished items are skipped and the timeline is recalculated (ADR-014). With Option B, a playout service reads the same schedule and publishes a stream.
 

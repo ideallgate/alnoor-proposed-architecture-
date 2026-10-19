@@ -29,10 +29,10 @@ Provider: **Hetzner, or any other provider the First Party approves** (including
 | Annex 19 item | Our approach |
 |---|---|
 | 1, 2 Application servers, database | API, public web and admin on an application host; PostgreSQL on its own host or volume (ADR-002) |
-| 3 Separate audio storage | S3-compatible object storage, not the application disks (audio ADR to follow) |
+| 3 Separate audio storage | S3-compatible object storage, not the application disks ([ADR-018](ADR-018-audio-storage-and-delivery.md)) |
 | 4, 5 CDN, progressive streaming | CDN in front of object storage with HTTP range requests; signed or temporary URLs for private content (Section 20, items 13-14) |
 | 6 Load balancer | Provider load balancer or a reverse proxy when more than one application host exists |
-| 7 WAF or equivalent | A CDN or edge service with WAF rules, or an equivalent the First Party approves. Hetzner has no WAF of its own, so this is an external service on that provider |
+| 7 WAF or equivalent | A CDN or edge service with WAF rules, or an equivalent the First Party approves. We understand Hetzner does not offer a WAF or CDN product (to be confirmed with the provider), so on that provider this would be an external service |
 | 8 TLS | Automated certificate issue and renewal (systemd timer or proxy built-in), not the application queue (ADR-012) |
 | 9 Separate environments | Development, testing and production, each from the same images and different configuration and secrets |
 | 10 Isolate heavy tasks | Workers (audio, alignment, indexing, notifications) run as separate containers on a separate host from the API (ADR-010, ADR-012) |
@@ -68,7 +68,7 @@ To keep that move cheap: every service runs from a container image, takes config
 - 99.5% availability on a single host per role depends on fast, scripted rebuild and restore. We must demonstrate it in the restore test and the performance tests. If the First Party wants a stronger guarantee, add a second application host behind a load balancer, which is within this design.
 - No automatic scaling at launch.
 - Infrastructure as code (host setup, Compose files, CI/CD deploy) goes in the First Party's repositories with the Docker files (Section 26). The tool is not chosen yet.
-- On Hetzner specifically: a WAF and a CDN with the capabilities Section 19 needs come from an external service, which must be on the First Party's approved list.
+- On Hetzner specifically: if the provider does not offer a WAF and a CDN with the capabilities Section 19 needs, they come from an external service, which must be on the First Party's approved list.
 - Managed PostgreSQL is used if the chosen provider offers it and the First Party approves; otherwise we run it ourselves with the backups above.
 
 ## Open points for the First Party

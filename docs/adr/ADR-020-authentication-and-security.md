@@ -29,7 +29,7 @@ Authentication is a module of the API (Identity and permissions, ADR-010), not a
 - **Request protection:** schema validation (ADR-008), rate limits, WAF at the edge (ADR-015), dependency and image scanning in CI.
 - **OWASP and MASVS:** the OWASP Top 10 and MASVS checklists are acceptance items. The security scan before launch (Annex 20.12) uses them.
 
-Sign-in methods for beneficiaries (email and password, phone number, or sign-in with Apple and Google) are decided with the First Party. If any third-party social sign-in is offered on iOS, Apple's App Store rules require Sign in with Apple as well. Account data collected is kept to what sync needs.
+Sign-in methods for beneficiaries (email and password, phone number, or sign-in with Apple and Google) are decided with the First Party. If a third-party or social sign-in is offered on iOS, Apple's App Store Review Guideline 4.8 requires the app to also offer an equivalent privacy-preserving sign-in option, and Sign in with Apple is the standard way to meet it. We will check the current wording of the guideline when the sign-in methods are chosen. Account data collected is kept to what sync needs.
 
 ## Consequences
 - No extra service for identity, and user data stays in the application database under our PDPL controls.

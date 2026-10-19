@@ -25,4 +25,4 @@ React + TypeScript for the admin dashboard.
 ## Consequences
 - Benefits: reuse of the proven foundation, one UI approach across admin, web and mobile, more of the schedule spent on the hadith model, approval cycle, search and audio sync.
 - Trade-off we accept: more libraries to choose and keep consistent; the "one component model" advantage assumes the mobile app is React Native.
-- Type safety across admin, web and mobile comes from the generated OpenAPI client (ADR-008), not from shared packages.
+- Type safety across admin, web and mobile comes from the generated OpenAPI client (ADR-008), shared as a package in the monorepo (ADR-024).

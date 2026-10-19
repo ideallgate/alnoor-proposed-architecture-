@@ -1,6 +1,6 @@
 # C4 level 2: Containers
 
-Applications and data stores that make up Noor (drawn as a C4-style flowchart for readable layout; solid arrows are calls, dotted arrows are asynchronous or edge paths). Mobile framework and public web framework are planned and still need their own ADRs.
+Applications and data stores that make up Noor (drawn as a C4-style flowchart for readable layout; solid arrows are calls, dotted arrows are asynchronous or edge paths). Mobile and public web are covered by ADR-016 and ADR-017.
 
 ```mermaid
 flowchart LR
@@ -12,8 +12,8 @@ flowchart LR
   subgraph noor["Noor platform"]
     direction LR
     subgraph clients["Client applications"]
-      mobile["Mobile apps<br/>React Native (ADR pending)"]
-      web["Public web<br/>Next.js (ADR pending)"]
+      mobile["Mobile apps<br/>React Native (ADR-016)"]
+      web["Public web<br/>Next.js (ADR-017)"]
       admin["Admin dashboard<br/>React, TypeScript (ADR-011)"]
     end
     api["API<br/>Node.js, Express, TypeScript<br/>modular monolith<br/>(ADR-001, 009, 010)"]

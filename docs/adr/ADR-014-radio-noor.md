@@ -19,7 +19,7 @@ The **radio module** owns playlists, the schedule, ordering and the "now playing
 
 ### Option B: Live stream (extension)
 - A playout service (for example Liquidsoap) reads the same schedule and produces one continuous audio stream. A streaming server (for example Icecast) serves it, with the CDN in front.
-- Standard radio players and third parties can listen. The Noor apps can also play this stream, which makes listeners sample-synchronized by construction.
+- Standard radio players and third parties can listen. The Noor apps can also play this stream. Every listener hears the same stream, so differences between listeners are only buffering delays.
 - Adds a fallback playlist for schedule gaps, stream metadata for the current item, and monitoring and automatic restart.
 
 ## Options considered
@@ -28,7 +28,7 @@ The **radio module** owns playlists, the schedule, ordering and the "now playing
 | Meets Section 12 as we read it | Yes | Yes |
 | Listeners outside the Noor apps (standard radio players, rebroadcast) | No | Yes |
 | Extra 24/7 services | None beyond the API and CDN | Playout service and streaming server |
-| Listener synchronization | Within clock-correction accuracy | Exact, one stream |
+| Listener synchronization | Within clock-correction accuracy | One stream; listeners differ only by buffering delay |
 | Failure modes | A client or API issue affects one listener | A playout or stream failure affects all listeners; needs failover |
 | Seeking or joining mid-item | Natural | Joins the live position |
 | Audio bandwidth | CDN, per listener | CDN, per listener (about the same) |

@@ -9,8 +9,8 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         # ---- The system ---------------------------------------------------
         noor = softwareSystem "Noor platform" "Mobile apps, web, admin dashboard, API, search, audio, radio, notifications" {
 
-            mobile = container "Mobile apps" "iOS and Android apps: library, search, audio with synced text, plans, radio" "React Native (proposed)" "Client"
-            web = container "Public web app" "Responsive web platform for beneficiaries" "Next.js, React (proposed)" "Client"
+            mobile = container "Mobile apps" "iOS and Android apps: library, search, audio with synced text, plans, radio" "React Native (ADR-016)" "Client"
+            web = container "Public web app" "Responsive web platform for beneficiaries" "Next.js, React (ADR-017)" "Client"
             admin = container "Admin dashboard" "Arabic admin: content, audio sync, approval cycle, radio, reports" "React, TypeScript (ADR-011)" "Client"
 
             api = container "API" "Modular monolith. REST API with OpenAPI contract, business rules, permissions" "Node.js, Express, TypeScript (ADR-009, ADR-010)" {

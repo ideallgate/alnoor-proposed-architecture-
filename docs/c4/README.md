@@ -13,4 +13,4 @@ Run Structurizr Lite in Docker from this folder:
 
 then open http://localhost:8080.
 
-Mobile (React Native) and public web (Next.js) are marked "proposed" because they do not have ADRs yet.
+To check the Structurizr model: `structurizr.sh validate -workspace workspace.dsl` (Structurizr CLI), or open it in Structurizr Lite.
