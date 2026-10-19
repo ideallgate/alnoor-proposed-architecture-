@@ -3,7 +3,7 @@
 - **Status:** Accepted (Executor decision)
 - **Annex reference:** 17 (Redis and queues), 19.10 (heavy tasks isolated), 8, 7, 11, 12, 14
 - **Type:** Open (our technical selection)
-- **Evidence:** [QUEUE-BENCHMARK.md](../benchmarks/QUEUE-BENCHMARK.md)
+- **Evidence:** [QUEUE-BENCHMARK.md](../benchmarks/QUEUE-BENCHMARK.md) (scenarios S1-S5) and [QUEUE-BENCHMARK-S6.md](../benchmarks/QUEUE-BENCHMARK-S6.md) (BullMQ with a transactional outbox)
 
 ## Context
 Audio processing, audio-to-text alignment, search indexing, bulk import, report export, scheduled notifications and the radio schedule must run outside web requests, in isolated workers. Jobs need retries, status for the admin dashboard and, for search indexing, a guarantee that publishing content never leaves it unindexed (ADR-004).
@@ -27,11 +27,25 @@ Measured in Docker on one Apple M1 laptop, 5 runs per cell, two passes with reve
 
 Errors across all throughput runs: 0 lost, 0 duplicate, 0 failed for every stack.
 
+### BullMQ on a dedicated Redis with a transactional outbox (scenario S6)
+The standard fix for BullMQ's commit-then-enqueue gap is an outbox table written in the same transaction as the content change, with a relay process that moves rows into the queue. Tested in Docker, 5 runs per cell, two passes with reversed order (results are the same in both):
+
+| | BullMQ + outbox | pg-boss | graphile-worker |
+|---|---|---|---|
+| Crash before commit (5,000 injected) | 0 changes without a job | 0 | 0 |
+| Producer killed right after commit (250 kills) | 0 changes without a job (relay caught up in about 17-19 ms) | 0 | 0 |
+| Relay killed between enqueue and mark-sent | 0 lost; duplicates: every row executed twice when completed jobs are removed, 0 when completed jobs are kept (not tested for the other two, which have no relay step) | n/a | n/a |
+| Total Redis data loss with 5,000 jobs waiting | 5,000 of 5,000 lost until a reconciliation step re-enqueued them (about 0.2 s to enqueue, about 1 s until all executed) | PostgreSQL process crash: 0 lost, no extra step | same |
+| Publish cost per operation (excludes relay work) | about 0.4 ms | about 0.83 ms | about 0.67-0.74 ms |
+| Latency from commit to job start (p99) | about 104-111 ms (set by the 100 ms poll) | about 2.0 s (default polling; opt-in notification not tested) | about 7-8 ms |
+
+So BullMQ with an outbox matches the PostgreSQL queues on the crash cases tested, but it needs more around it: an outbox table with cleanup, an always-on relay process, a reconciliation procedure, idempotent handlers (it is at-least-once, and dedup by job id only works while the job still exists in Redis), a `done_at` write per job, monitoring of stuck rows, and the payload stored twice. The Redis-loss and PostgreSQL-crash rows are different failures and are not a like-for-like durability comparison.
+
 ## Decision
 pg-boss on the application PostgreSQL, in its own schema with its own connection pool. Workers run as separate processes (ADR-010). Redis is used for cache and rate limiting only, so losing or evicting it never loses work.
 
 Why PostgreSQL rather than BullMQ:
-- **Transactional enqueue.** The content change and its reindex job commit or roll back together. The plain "commit, then enqueue" pattern with BullMQ left every injected crash with a committed change and no job. (An outbox table would also fix that for BullMQ; we did not test it, and it is more code to build and maintain.)
+- **Transactional enqueue with no extra machinery.** The content change and its reindex job commit or roll back together. The plain "commit, then enqueue" pattern with BullMQ left every injected crash with a committed change and no job. An outbox fixes that for BullMQ (scenario S6), but adds the pieces listed above. Our reason is therefore simplicity and fewer failure modes, not that BullMQ cannot be made safe.
 - **No second stateful service.** BullMQ is safe only on a dedicated Redis with persistence and no eviction, which is one more service to run, back up and monitor.
 - **Throughput is sufficient.** The slowest PostgreSQL result (about 1.3k jobs/s) is far above Noor's expected workload (audio uploads, edits and notification batches).
 
@@ -43,5 +57,6 @@ Why pg-boss rather than graphile-worker: higher throughput at N=50 (about 4.3k v
   - BullMQ is faster on raw throughput in our tests (about 2-6x). If real volume ever approached those limits we would revisit this decision.
   - The queue adds load to the application database. In the throughput test, PostgreSQL CPU rose to 52-80% (against a one-core cap) for pg-boss. Mitigations: separate schema and pool, and the option to move the queue to its own PostgreSQL instance without changing application code.
   - Our pg-boss benchmark setup used batch fetching with `batchSize` equal to the concurrency, which departs from its defaults, and did not enable LISTEN/NOTIFY.
+- pg-boss's default polling gives about 1.7 s from commit to job start. That is acceptable for search indexing, audio processing and notifications. If sub-second pickup ever matters, options are pg-boss's opt-in notification setting (not tested) or graphile-worker, which measured about 1 ms but was slower than pg-boss at higher concurrency and used more PostgreSQL CPU and memory in the mixed scenario. The choice between the two PostgreSQL queues is close, and both lost nothing.
 - Notification jobs due at a set time go on their own queue, so a backlog of audio jobs cannot delay them. The benchmark used one shared queue, so its lateness figures are not evidence about timing.
 - Limits of the evidence: one laptop, synthetic jobs, process kills and simulated crashes (not power loss), 5 runs per cell.
