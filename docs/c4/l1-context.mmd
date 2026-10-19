@@ -1,0 +1,17 @@
+C4Context
+    title System Context: Noor in the Prophetic Sunnah (level 1)
+
+    Person(learner, "Beneficiary", "Reads, searches and listens to hadith; follows plans; listens to Radio Noor")
+    Person(editor, "Content team", "Enters and edits content, uploads and syncs audio, submits for review")
+    Person(scholar, "Scholars and approvers", "Review and approve content in the approval cycle")
+
+    System(noor, "Noor platform", "Mobile apps, web, admin dashboard, API, search, audio, radio, notifications")
+
+    System_Ext(push, "Apple and Google push services", "Deliver notifications to devices")
+    System_Ext(monitor, "Monitoring and analytics", "Error monitoring, uptime, usage analytics")
+
+    Rel(learner, noor, "Reads, searches, listens", "iOS, Android, web")
+    Rel(editor, noor, "Manages content and audio", "Admin dashboard")
+    Rel(scholar, noor, "Reviews and approves", "Admin dashboard")
+    Rel(noor, push, "Sends notifications", "HTTPS")
+    Rel(noor, monitor, "Sends errors, metrics and events", "HTTPS")
