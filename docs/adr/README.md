@@ -9,6 +9,7 @@
 | [010](ADR-010-modular-monolith.md) | Modular monolith with extractable modules | 19, 17, 26 | Accepted |
 | [011](ADR-011-admin-dashboard-react.md) | Admin dashboard: React + TypeScript | 14, 17 | Accepted |
 | [012](ADR-012-background-jobs.md) | Background jobs: pg-boss on PostgreSQL | 17, 19, 7, 8, 11, 12, 14 | Accepted |
+| [013](ADR-013-arabic-search.md) | Arabic search engine | 5, 17, 18, 23 | Proposed (bake-off and scholar review pending) |
 | [004](ADR-004-content-versioning.md) | Content versioning and publishing | 15 | Proposed |
 | [005](ADR-005-text-anchors.md) | Text anchors for gharib, narrators and sync | 2, 3, 7 | Proposed |
 | [006](ADR-006-classification-trees.md) | Classification trees | 2 | Proposed |

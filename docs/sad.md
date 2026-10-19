@@ -30,6 +30,7 @@ _To be added in chunk 8._
 | Modular monolith with extractable modules | [ADR-010](adr/ADR-010-modular-monolith.md) |
 | Admin dashboard: React | [ADR-011](adr/ADR-011-admin-dashboard-react.md) |
 | Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
+| Arabic search engine (provisional) | [ADR-013](adr/ADR-013-arabic-search.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
 | Classification trees | [ADR-006](adr/ADR-006-classification-trees.md) |
@@ -54,6 +55,7 @@ _Pending._
 ## 10. Risks and open points
 - ADR-001 needs the First Party's written approval.
 - Benchmark evidence comes from a single laptop; production-like performance tests are required before acceptance.
+- Arabic search ranking and the ta marbuta/ha rule need review and approval by the First Party's scholars ([ADR-013](adr/ADR-013-arabic-search.md)). This is a dependency for Phase 2 acceptance and should be scheduled early.
 
 ## 11. Glossary
 Hadith, riwaya (narration), rawi (narrator), gharib al-hadith (rare vocabulary), sharh (explanation), tashkeel (diacritics), wird (daily portion).

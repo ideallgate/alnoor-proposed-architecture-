@@ -15,6 +15,9 @@ The need and the constraints behind it.
 ## Decision
 What we chose and why, in one or two sentences.
 
+## Validation required (only if the decision depends on domain expertise)
+What we can validate ourselves, and what needs the First Party's subject-matter experts (for example scholars). State plainly which claims are not yet backed by that review.
+
 ## Consequences
 - Benefits:
 - Trade-off we accept:
