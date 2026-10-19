@@ -1,6 +1,6 @@
 # ADR-007: Permission model
 
-- **Status:** Proposed
+- **Status:** Accepted (Executor decision)
 - **Annex reference:** 15 (roles, scoped permissions), 20 (RBAC at function and data level)
 - **Type:** Open
 
@@ -15,7 +15,7 @@ Roles are Editor, Reviewer, Content manager and System admin. Permissions are sc
 | Extra moving parts | None | A library | Library + policy files | A new service to run |
 | Handover simplicity | Depends on our code quality | Familiar to many | Less familiar | Heavy for this project |
 
-## Decision (lean)
+## Decision
 CASL: declarative, testable rules, enforced in the data-access layer.
 
 ## Consequences

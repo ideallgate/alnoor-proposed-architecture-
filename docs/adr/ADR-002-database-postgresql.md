@@ -1,6 +1,6 @@
 # ADR-002: Database: PostgreSQL
 
-- **Status:** Proposed
+- **Status:** Accepted (Executor decision)
 - **Annex reference:** 17 (MySQL or PostgreSQL), 2, 3
 - **Type:** Open (annex allows MySQL or PostgreSQL; this is our selection)
 
@@ -11,7 +11,7 @@ The content model is highly relational (hadith, narrations, narrators, explanati
 | | PostgreSQL | MySQL 8 |
 |---|---|---|
 | Tree queries | Recursive CTEs, optional `ltree` | Recursive CTEs |
-| Structured fields (metadata, sync points) | JSONB with indexing | JSON, weaker indexing |
+| Structured fields (metadata, sync points) | JSONB with indexing (GIN) | JSON, indexed through generated columns |
 | Migrations | Transactional DDL: a failed migration rolls back | DDL is not transactional |
 | Row-level security | Built in | Not available |
 | Arabic full-text search | Not sufficient natively, so a dedicated engine is needed | Same limitation |

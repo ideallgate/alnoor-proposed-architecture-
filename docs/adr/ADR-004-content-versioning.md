@@ -1,6 +1,6 @@
 # ADR-004: Content versioning and publishing
 
-- **Status:** Proposed
+- **Status:** Accepted (Executor decision)
 - **Annex reference:** 15, 3 (rules 5 and 6), 14.5 (edit log)
 - **Type:** Open, but central to the model
 

@@ -1,6 +1,6 @@
 # ADR-005: Text anchors for gharib, narrators and sync points
 
-- **Status:** Proposed
+- **Status:** Accepted (Executor decision)
 - **Annex reference:** 2.7, 3 (rules 3 and 4), 7, 14.3
 - **Type:** Open, important
 

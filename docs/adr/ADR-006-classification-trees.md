@@ -1,6 +1,6 @@
 # ADR-006: Classification trees
 
-- **Status:** Proposed
+- **Status:** Accepted (Executor decision)
 - **Annex reference:** 2.9
 - **Type:** Open, low risk
 
