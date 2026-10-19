@@ -2,6 +2,8 @@
 
 Prepared by IdeallCo Company.
 
+> **Work in progress.** This is not a complete or final version. It is still being developed and some decisions are open. Content may change.
+
 Each report states its setup, results and limits. All runs were done in Docker (or noted otherwise) on one Apple M1 laptop. They compare options with each other and are not production figures. Kits to re-run them are in `benchmarks/kits/`.
 
 | Report | Question | Used by | Kit |

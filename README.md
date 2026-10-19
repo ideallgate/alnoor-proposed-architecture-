@@ -2,6 +2,8 @@
 
 Prepared by IdeallCo Company.
 
+> **Work in progress.** This is not a complete or final version. It is still being developed and some decisions are open. Content may change.
+
 Architecture documentation for the Noor platform (Dhurra Technology). It is built up chunk by chunk and reviewed as it grows.
 
 ## Contents

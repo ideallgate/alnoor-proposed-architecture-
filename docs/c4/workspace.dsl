@@ -1,4 +1,4 @@
-workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of truth for the architecture diagrams." {
+workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of truth for the architecture diagrams. Work in progress, not a final version." {
 
     model {
         # ---- People -------------------------------------------------------

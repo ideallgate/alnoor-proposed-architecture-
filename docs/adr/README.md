@@ -2,6 +2,8 @@
 
 Prepared by IdeallCo Company.
 
+> **Work in progress.** This is not a complete or final version. It is still being developed and some decisions are open. Content may change.
+
 | ADR | Title | Annex | Status |
 |---|---|---|---|
 | [001](ADR-001-backend-framework.md) | Backend framework: Node.js + Express vs Laravel with Octane | 17, 18, 19 | Accepted by Executor; First Party approval not yet obtained |

@@ -1,6 +1,10 @@
 # Software Architecture Document: Noor in the Prophetic Sunnah
 
-Prepared by IdeallCo Company. Status: draft for review by the First Party. Decisions are recorded in [docs/adr](adr/README.md). Diagrams are in [docs/c4](c4/README.md).
+Prepared by IdeallCo Company.
+
+> **Work in progress.** This is not a complete or final version. It is still being developed and some decisions are open. Content may change.
+
+Status: draft for review by the First Party. Decisions are recorded in [docs/adr](adr/README.md). Diagrams are in [docs/c4](c4/README.md).
 
 ## 1. Introduction and goals
 Scope from Annex Section 1: iOS and Android apps, a responsive web platform, an Arabic admin dashboard, backend and APIs, the scholarly content model, Arabic search, audio storage and processing, an audio sync tool, plans and review, notifications, Radio Noor, reports, infrastructure, backup and monitoring.
