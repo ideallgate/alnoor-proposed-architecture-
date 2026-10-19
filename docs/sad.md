@@ -32,7 +32,6 @@ See [C4 level 1: system context](c4/01-context.md).
 | Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
 | Arabic search engine: OpenSearch | [ADR-013](adr/ADR-013-arabic-search.md) |
 | Hosting: Ubuntu hosts, Docker Compose first, Kubernetes later | [ADR-015](adr/ADR-015-hosting-and-infrastructure.md) |
-| Hosting: Ubuntu + Docker Compose, Kubernetes when needed | [ADR-015](adr/ADR-015-hosting-and-deployment.md) |
 | Radio Noor: scheduled core, in-app baseline, optional live stream | [ADR-014](adr/ADR-014-radio-noor.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
@@ -63,7 +62,7 @@ _Pending._
 - Benchmark evidence comes from a single laptop; production-like performance tests are required before acceptance. The search benchmark is incomplete (no reversed-order pass, reduced PostgreSQL run, Meilisearch 50x not finished); see [ADR-013](adr/ADR-013-arabic-search.md).
 - The search benchmark corpus is a public dataset with unverified redistribution rights. We need the First Party's real sample corpus, query list and agreed data volume to re-check the search decision.
 - Provider, country and region, and the data-residency position under PDPL, need the First Party's decision ([ADR-015](adr/ADR-015-hosting-and-infrastructure.md)).
-- Hosting country, region and provider need the First Party's decision, including data-location rules under PDPL ([ADR-015](adr/ADR-015-hosting-and-deployment.md)). A single application host does not give automatic failover for the 99.5% target.
+- A single host per role does not give automatic failover for the 99.5% target; it relies on fast rebuild and restore, shown in the restore and performance tests ([ADR-015](adr/ADR-015-hosting-and-infrastructure.md)).
 - Arabic search ranking and the ta marbuta/ha rule need review and approval by the First Party's scholars ([ADR-013](adr/ADR-013-arabic-search.md)). This is a dependency for Phase 2 acceptance and should be scheduled early.
 
 ## 11. Glossary
