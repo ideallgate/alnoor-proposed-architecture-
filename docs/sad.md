@@ -31,6 +31,7 @@ _To be added in chunk 8._
 | Admin dashboard: React | [ADR-011](adr/ADR-011-admin-dashboard-react.md) |
 | Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
 | Arabic search engine: OpenSearch | [ADR-013](adr/ADR-013-arabic-search.md) |
+| Hosting: Ubuntu hosts, Docker Compose first, Kubernetes later | [ADR-015](adr/ADR-015-hosting-and-infrastructure.md) |
 | Radio Noor: scheduled core, in-app baseline, optional live stream | [ADR-014](adr/ADR-014-radio-noor.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
@@ -45,7 +46,7 @@ _To be added in chunk 8._
 Planned: publish a hadith through the approval cycle; play audio with synced text; radio now-playing.
 
 ## 7. Deployment view
-_Section 19 infrastructure. Pending chunk 7._
+Ubuntu LTS hosts running Docker Compose; separate application, worker, database and search hosts; object storage and CDN; backups in a separate location. Provider and region are set with the First Party. See [ADR-015](adr/ADR-015-hosting-and-infrastructure.md).
 
 ## 8. Cross-cutting concepts
 _Security, observability, backup, versioning. Pending chunk 7._
@@ -57,6 +58,7 @@ _Pending._
 - ADR-001 needs the First Party's written approval.
 - Benchmark evidence comes from a single laptop; production-like performance tests are required before acceptance. The search benchmark is incomplete (no reversed-order pass, reduced PostgreSQL run, Meilisearch 50x not finished); see [ADR-013](adr/ADR-013-arabic-search.md).
 - The search benchmark corpus is a public dataset with unverified redistribution rights. We need the First Party's real sample corpus, query list and agreed data volume to re-check the search decision.
+- Provider, country and region, and the data-residency position under PDPL, need the First Party's decision ([ADR-015](adr/ADR-015-hosting-and-infrastructure.md)).
 - Arabic search ranking and the ta marbuta/ha rule need review and approval by the First Party's scholars ([ADR-013](adr/ADR-013-arabic-search.md)). This is a dependency for Phase 2 acceptance and should be scheduled early.
 
 ## 11. Glossary
