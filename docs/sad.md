@@ -15,7 +15,7 @@ Technology is the Executor's selection, recorded in the decisions below. Where i
 |---|---|---|---|
 | Backend: Laravel | Node.js + Express, TypeScript | [ADR-001](adr/ADR-001-backend-framework.md), [ADR-009](adr/ADR-009-express-vs-nestjs.md) | To be recorded |
 | Admin dashboard: Vue 3 | React + TypeScript | [ADR-011](adr/ADR-011-admin-dashboard-react.md) | To be recorded |
-| Queues: Laravel Queues or equivalent | BullMQ on Redis | To be written | To be recorded |
+| Queues: Laravel Queues or equivalent | pg-boss on PostgreSQL (Redis for cache only) | [ADR-012](adr/ADR-012-background-jobs.md) | To be recorded |
 
 ## 3. Context and scope (C4 level 1)
 _To be added in chunk 8._
@@ -29,6 +29,7 @@ _To be added in chunk 8._
 | Express with hexagonal modules, not NestJS | [ADR-009](adr/ADR-009-express-vs-nestjs.md) |
 | Modular monolith with extractable modules | [ADR-010](adr/ADR-010-modular-monolith.md) |
 | Admin dashboard: React | [ADR-011](adr/ADR-011-admin-dashboard-react.md) |
+| Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
 | Classification trees | [ADR-006](adr/ADR-006-classification-trees.md) |
