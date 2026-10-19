@@ -1,12 +1,16 @@
 # C4 diagrams
 
-- `workspace.dsl`: Structurizr model for levels 1 to 3 (source of truth). Open it with Structurizr Lite or the Structurizr CLI, which can export PNG or SVG.
-- `l1-context.mmd`: the same level 1 diagram in Mermaid, kept for comparison. It renders directly on GitHub if pasted into a Markdown mermaid block.
+Two versions are kept on purpose:
 
-Run Structurizr Lite in Docker:
+- **Structurizr (source of truth):** `workspace.dsl`, levels 1 to 3 from one model. Open it with Structurizr Lite or the Structurizr CLI, which can export PNG or SVG.
+- **Mermaid (renders on GitHub):** `01-context.md`, `02-containers.md`, `03-api-components.md`, plus `l1-context.mmd` (a standalone level 1 sample).
+
+When the two differ, the Structurizr model wins. Keep names the same in both.
+
+Run Structurizr Lite in Docker from this folder:
 
     docker run -it --rm -p 8080:8080 -v "$PWD":/usr/local/structurizr structurizr/lite
 
 then open http://localhost:8080.
 
-Components marked "proposed" (mobile, public web) are not yet covered by an ADR.
+Mobile (React Native) and public web (Next.js) are marked "proposed" because they do not have ADRs yet.

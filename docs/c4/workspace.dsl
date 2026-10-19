@@ -24,6 +24,7 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
                 plans = component "Plans and progress" "Memorization, review and listening plans; progress and bookmarks" "Module"
                 notifications = component "Notifications" "Reminders and scheduled notifications" "Module"
                 radiomod = component "Radio" "Playlists, schedule, now-playing and next timeline (single source of truth for Option A and B)" "Module (ADR-014)"
+                bus = component "Event bus and job publisher" "In-process events between modules; enqueues pg-boss jobs in the same transaction as the change" "Module (ADR-010, ADR-012)"
                 analytics = component "Analytics and reports" "Usage indicators and exports" "Module"
             }
 
@@ -39,6 +40,7 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         # ---- External systems --------------------------------------------
         cdn = softwareSystem "CDN and WAF" "Edge delivery of audio and public endpoints, request filtering" "External"
         push = softwareSystem "Apple and Google push services" "Deliver notifications to devices" "External"
+        mail = softwareSystem "Email service (to be chosen)" "Account and notification email" "External"
         monitor = softwareSystem "Monitoring and analytics" "Error monitoring, uptime, usage analytics" "External"
 
         # ---- Level 1 relationships ---------------------------------------
@@ -46,6 +48,7 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         editor -> noor "Manages content and audio" "Admin dashboard"
         scholar -> noor "Reviews and approves" "Admin dashboard"
         noor -> push "Sends notifications" "HTTPS"
+        noor -> mail "Sends email through" "HTTPS"
         noor -> monitor "Sends errors, metrics and events" "HTTPS"
 
         # ---- Level 2 relationships ---------------------------------------
@@ -73,6 +76,7 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         workers -> searchengine "Indexes published content" "HTTPS"
         workers -> storage "Reads and writes audio" "S3 API"
         workers -> push "Sends notifications" "HTTPS"
+        workers -> mail "Sends email" "HTTPS"
         workers -> monitor "Sends errors" "HTTPS"
 
         playout -> api "Reads radio schedule" "HTTPS"
@@ -82,6 +86,10 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         library -> content "Reads published content"
         library -> cache "Caches responses"
         approval -> content "Publishes versions"
+        approval -> bus "Emits published event"
+        bus -> searchmod "Notifies of published content"
+        bus -> notifications "Notifies of published content"
+        bus -> db "Enqueues jobs (pg-boss)"
         searchmod -> searchengine "Queries"
         searchmod -> content "Resolves hits to content"
         audiomod -> content "Links audio to hadith text"
