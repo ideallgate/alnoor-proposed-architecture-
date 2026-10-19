@@ -19,6 +19,8 @@ The client asked why we are not using NestJS. Our backend approach is Node.js + 
 | Fit with our existing foundation | Direct | Rebuild or wrap | Rebuild or wrap |
 
 ## Measured performance (Docker, Apple M1, same SQL and data, 5 runs, median)
+Full report: [NEST-BENCHMARK.md](../benchmarks/NEST-BENCHMARK.md).
+
 - Database-backed endpoints (`/radio/now`, `/hadith/4242`) at c=100 and c=1000: both NestJS stacks within about ±3% of the Express stack, similar to run-to-run spread, in two passes with reversed order.
 - `/health` (no database): NestJS on Fastify about 1.45-1.5x Express. This route measures framework overhead only. Part of the gap may come from the Express 5 vs 4 difference in the Nest adapter and from Fastify not sending an ETag.
 - Memory: NestJS about 20 MB higher under load and 30-40 MB higher at idle.

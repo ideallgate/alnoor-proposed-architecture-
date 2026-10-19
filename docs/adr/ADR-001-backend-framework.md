@@ -20,6 +20,8 @@ The annex names Laravel for the backend. Section 17 allows alternatives with wri
 | Main risk | We own more architectural decisions and must keep the structure disciplined | Needs a long-running application server (Octane) tuned for load, and a second language across the system |
 
 ## Evidence (same data, same SQL, same endpoints)
+Full report: [BACKEND-NODE-VS-LARAVEL.md](../benchmarks/BACKEND-NODE-VS-LARAVEL.md).
+
 Native Apple M1 run (Node 22, Laravel 12, Octane on RoadRunner):
 
 | | Node.js + Express | Laravel with Octane |

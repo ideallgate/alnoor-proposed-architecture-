@@ -9,7 +9,8 @@ Architecture documentation for the Noor platform (Dhurra Technology). It is buil
 | `docs/sad.md` | Software Architecture Document (arc42-style). |
 | `docs/adr/` | Architecture Decision Records, one decision per file. Index in `docs/adr/README.md`. |
 | `docs/c4/` | C4 levels 1 to 3: Structurizr model (`workspace.dsl`) and Mermaid versions. |
-| `docs/benchmarks/` | Benchmark reports referenced by the decisions (backend, queues, search). |
+| `docs/benchmarks/` | Benchmark reports referenced by the decisions (backend, NestJS, queues, search). Index in `docs/benchmarks/README.md`. |
+| `benchmarks/kits/` | Zipped kits to re-run the benchmarks (no corpus data). |
 
 ## Conventions
 
