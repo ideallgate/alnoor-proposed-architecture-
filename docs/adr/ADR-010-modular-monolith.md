@@ -17,12 +17,12 @@ Capacity target is 1,500 concurrent sessions within a 5-month schedule. Heavy wo
 | Handover | One repo, one deploy, clear module map | Many repos and contracts | Easy to run, hard to extend |
 
 ## Decision
-Modular monolith with enforced boundaries, plus separate BullMQ workers for heavy tasks from day one.
+Modular monolith with enforced boundaries, plus separate pg-boss workers (ADR-012) for heavy tasks from day one.
 
 Boundary rules:
 1. A module exposes a small public interface (ports); other modules import only that.
 2. Each module owns its tables; others read through the owner's interface.
-3. Cross-module reactions go through an in-process event bus behind an interface, replaceable by a Redis queue.
+3. Cross-module reactions go through an in-process event bus behind an interface, replaceable by a message queue.
 4. Lint rules (for example dependency-cruiser or ESLint boundaries) fail CI on forbidden imports.
 5. Audio processing, search indexing and the radio scheduler run as queue workers.
 

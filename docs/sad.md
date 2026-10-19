@@ -18,7 +18,7 @@ Technology is the Executor's selection, recorded in the decisions below. Where i
 | Queues: Laravel Queues or equivalent | pg-boss on PostgreSQL (Redis for cache only) | [ADR-012](adr/ADR-012-background-jobs.md) | To be recorded |
 
 ## 3. Context and scope (C4 level 1)
-_To be added in chunk 8._
+See [C4 level 1: system context](c4/01-context.md).
 
 ## 4. Solution strategy
 | Area | Decision |
@@ -32,6 +32,7 @@ _To be added in chunk 8._
 | Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
 | Arabic search engine: OpenSearch | [ADR-013](adr/ADR-013-arabic-search.md) |
 | Hosting: Ubuntu hosts, Docker Compose first, Kubernetes later | [ADR-015](adr/ADR-015-hosting-and-infrastructure.md) |
+| Hosting: Ubuntu + Docker Compose, Kubernetes when needed | [ADR-015](adr/ADR-015-hosting-and-deployment.md) |
 | Radio Noor: scheduled core, in-app baseline, optional live stream | [ADR-014](adr/ADR-014-radio-noor.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
@@ -40,7 +41,10 @@ _To be added in chunk 8._
 | API contract | [ADR-008](adr/ADR-008-api-contract.md) |
 
 ## 5. Building blocks (C4 levels 2 and 3)
-_To be added in chunk 8._
+- [C4 level 2: containers](c4/02-containers.md)
+- [C4 level 3: API components](c4/03-api-components.md)
+
+Diagrams are Mermaid, rendered by GitHub. Level 3 covers the API only; the workers and the admin dashboard get their own level 3 when their designs are detailed.
 
 ## 6. Runtime views
 Planned: publish a hadith through the approval cycle; play audio with synced text; radio now-playing.
@@ -59,6 +63,7 @@ _Pending._
 - Benchmark evidence comes from a single laptop; production-like performance tests are required before acceptance. The search benchmark is incomplete (no reversed-order pass, reduced PostgreSQL run, Meilisearch 50x not finished); see [ADR-013](adr/ADR-013-arabic-search.md).
 - The search benchmark corpus is a public dataset with unverified redistribution rights. We need the First Party's real sample corpus, query list and agreed data volume to re-check the search decision.
 - Provider, country and region, and the data-residency position under PDPL, need the First Party's decision ([ADR-015](adr/ADR-015-hosting-and-infrastructure.md)).
+- Hosting country, region and provider need the First Party's decision, including data-location rules under PDPL ([ADR-015](adr/ADR-015-hosting-and-deployment.md)). A single application host does not give automatic failover for the 99.5% target.
 - Arabic search ranking and the ta marbuta/ha rule need review and approval by the First Party's scholars ([ADR-013](adr/ADR-013-arabic-search.md)). This is a dependency for Phase 2 acceptance and should be scheduled early.
 
 ## 11. Glossary
