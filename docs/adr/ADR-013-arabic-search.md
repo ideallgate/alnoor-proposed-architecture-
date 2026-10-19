@@ -1,6 +1,6 @@
 # ADR-013: Arabic search engine
 
-- **Status:** Proposed. Our recommendation is OpenSearch with a custom Arabic analyzer chain. Evidence is from an incomplete benchmark (see Limits of the evidence). The ta marbuta/ha rule and the ranking criteria are pending the First Party's scholars (see Validation required).
+- **Status:** Accepted by the Executor: OpenSearch with a custom Arabic analyzer chain. Evidence is from an incomplete benchmark (see Limits of the evidence); the decision is to be re-checked against the First Party's real corpus. The ta marbuta/ha rule and the ranking criteria are pending the First Party's scholars (see Validation required).
 - **Annex reference:** 5 (Arabic search), 17 (OpenSearch, Meilisearch or an approved technology), 18 (search under one second), 23 (Phase 2 acceptance: search from the app)
 - **Type:** Open (our technical selection, from the options the annex lists)
 - **Evidence:** [SEARCH-BENCHMARK.md](../benchmarks/SEARCH-BENCHMARK.md)
@@ -35,7 +35,7 @@ Measured in Docker on one Apple M1 laptop, each engine capped at 2 CPUs and 2 Gi
 At real corpus size all three engines meet the one-second target at concurrency 1 and 10. At concurrency 50, PostgreSQL did not (p95 1.7 s, p99 5.1 s) in its untuned configuration.
 
 ## Decision
-We recommend **OpenSearch with a custom Arabic analyzer chain**, pending the scholar approvals below. We are taking this to the First Party as our selection, and it is one of the two engines Annex 17 names.
+We select **OpenSearch with a custom Arabic analyzer chain**. The ta marbuta/ha rule and the ranking criteria still need the scholar approvals below. OpenSearch is one of the two engines Annex 17 names.
 
 Why OpenSearch:
 - **We control the normalization algorithm.** Section 5 asks for ta marbuta/ha handling "per the approved algorithm". In OpenSearch the algorithm is a short analyzer definition, and switching between the strict and merged rules is a configuration change followed by a reindex. In Meilisearch the built-in tokenizer already folds ta marbuta/ha, and our test could not undo it.
