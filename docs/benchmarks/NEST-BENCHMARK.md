@@ -71,7 +71,7 @@ Median req/s over 5 ab runs (min–max in brackets); ratios are Nest ÷ node. Ev
 Error check: 180 measured runs, total failed = 0, total non-2xx = 0.
 
 ## Reading the numbers (no conclusions beyond them)
-- `/radio/now` and `/hadith/4242` (database-bound, ~5.5k and ~6.7k req/s): all three stacks are within about ±3% of each other in most cells, and the per-cell run-to-run spread is of similar size. The one larger gap is nest-fastify on `/hadith` at c=1000 in pass 2 (0.922 of node), which did not appear in pass 1 (1.000). I treat these as within noise.
+- `/radio/now` and `/hadith/4242` (database-bound, ~5.5k and ~6.7k req/s): all three stacks are within about ±3% of each other in most cells, and the per-cell run-to-run spread is of similar size. The one larger gap is nest-fastify on `/hadith` at c=1000 in pass 2 (0.922 of node), which did not appear in pass 1 (1.000). We treat these as within noise.
 - `/health` (no database): nest-fastify was about 1.44–1.51× node in both passes and both concurrencies, well outside the run spread. nest-express was 0.86–0.93× node in pass 1 and 0.91–0.98× in pass 2; the spread is large (min–max ranges overlap node's at c=1000). Part of this may come from Express 5 (Nest) vs Express 4 (node stack) and from Fastify's different default header/JSON handling; this test did not separate those causes.
 - Memory: Nest idles higher (≈97–105 MB vs ≈66 MB). Under load the averages were ≈227–229 MB vs ≈204–210 MB and peaks ≈251–269 MB vs ≈248 MB. PostgreSQL memory is not shown because it runs in a separate container the kit's sampler does not see.
 - Order effect: the two passes broadly agree; differences between passes are of the same size as run spread, so no clear warm-up/thermal bias is visible.

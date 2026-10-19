@@ -1,5 +1,7 @@
 # Noor in the Prophetic Sunnah: Architecture
 
+Prepared by IdeallCo Company.
+
 Architecture documentation for the Noor platform (Dhurra Technology). It is built up chunk by chunk and reviewed as it grows.
 
 ## Contents
@@ -25,6 +27,7 @@ Architecture documentation for the Noor platform (Dhurra Technology). It is buil
 - [x] Backend, modular monolith, admin, background jobs (ADR-001, 009 to 012)
 - [x] Arabic search (ADR-013) and Radio Noor (ADR-014)
 - [x] Hosting and deployment (ADR-015)
+- [x] Edge: WAF and CDN (ADR-025; CDN vendor open)
 - [x] Mobile, web, audio, security, sync, notifications, observability, repositories (ADR-016 to 024)
 - [x] SAD sections 1 to 11
 - [x] C4 levels 1 to 3

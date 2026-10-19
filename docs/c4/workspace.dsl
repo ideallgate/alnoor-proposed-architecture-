@@ -3,8 +3,9 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
     model {
         # ---- People -------------------------------------------------------
         learner = person "Beneficiary" "Reads, searches and listens to hadith; follows plans; listens to Radio Noor"
-        editor = person "Content team" "Enters and edits content, uploads and syncs audio, submits for review"
+        editor = person "Content team and administrators" "Enter and edit content, upload and sync audio, submit for review; manage users, radio and reports"
         scholar = person "Scholars and approvers" "Review and approve content in the approval cycle"
+        radioListeners = person "Third-party radio listeners" "Listen to the live radio stream in any stream-capable player (only if the First Party chooses Radio Option B)" "Optional"
 
         # ---- The system ---------------------------------------------------
         noor = softwareSystem "Noor platform" "Mobile apps, web, admin dashboard, API, search, audio, radio, notifications" {
@@ -12,6 +13,9 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
             mobile = container "Mobile apps" "iOS and Android apps: library, search, audio with synced text, plans, radio" "React Native (ADR-016)" "Client"
             web = container "Public web app" "Responsive web platform for beneficiaries" "Next.js, React (ADR-017)" "Client"
             admin = container "Admin dashboard" "Arabic admin: content, audio sync, approval cycle, radio, reports" "React, TypeScript (ADR-011)" "Client"
+
+            edge = container "Edge (WAF and reverse proxy)" "Terminates TLS for web and API traffic in Riyadh; WAF rules, rate limits, routing to the API and web app (ADR-025)" "BunkerWeb (Nginx, ModSecurity, OWASP CRS)" "Edge"
+            mediaCdn = container "Media CDN (vendor to be selected)" "Global delivery of audio and static media from the private origin; short-lived signed URLs, byte ranges. No logins or user data pass through it (ADR-025, ADR-018)" "Managed CDN, selected with the First Party" "Managed"
 
             api = container "API" "Modular monolith. REST API with OpenAPI contract, business rules, permissions" "Node.js, Express, TypeScript (ADR-009, ADR-010)" {
 
@@ -34,14 +38,14 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
             searchengine = container "Search engine" "Arabic search index with custom analyzer chain" "OpenSearch (ADR-013)" "Database"
             cache = container "Cache" "Cache and rate limiting only. Never holds queue state" "Redis" "Database"
             storage = container "Audio storage" "Original and processed audio files, private origin" "S3-compatible object storage" "Database"
+            monitoring = container "Infrastructure monitoring" "Resource, uptime and cost dashboards with alerts. Runs outside the application hosts (ADR-023)" "Grafana, Uptime Kuma" "Monitoring"
+            errors = container "Error monitoring" "Collects errors and crash reports from the apps, web, API and workers. Self-hosted so error data stays in our infrastructure (ADR-023)" "GlitchTip (Sentry-compatible); Sentry is the alternative" "Monitoring"
             playout = container "Radio playout (optional)" "Live stream of the radio schedule if the First Party chooses Option B" "Liquidsoap, Icecast" "Optional"
         }
 
         # ---- External systems --------------------------------------------
-        cdn = softwareSystem "CDN and WAF" "Edge delivery of audio and public endpoints, request filtering" "External"
         push = softwareSystem "Apple and Google push services" "Deliver notifications to devices" "External"
         mail = softwareSystem "Email service (to be chosen)" "Account and notification email" "External"
-        monitor = softwareSystem "Monitoring and analytics" "Error monitoring, uptime, usage analytics" "External"
 
         # ---- Level 1 relationships ---------------------------------------
         learner -> noor "Reads, searches, listens" "iOS, Android, web"
@@ -49,7 +53,7 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         scholar -> noor "Reviews and approves" "Admin dashboard"
         noor -> push "Sends notifications" "HTTPS"
         noor -> mail "Sends email through" "HTTPS"
-        noor -> monitor "Sends errors, metrics and events" "HTTPS"
+        radioListeners -> noor "Listen to the live stream (Option B)" "HTTPS, audio stream"
 
         # ---- Level 2 relationships ---------------------------------------
         learner -> mobile "Uses"
@@ -57,27 +61,36 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
         editor -> admin "Uses"
         scholar -> admin "Uses"
 
-        mobile -> api "Calls" "HTTPS, JSON"
-        web -> api "Calls" "HTTPS, JSON"
-        admin -> api "Calls" "HTTPS, JSON"
-        mobile -> cdn "Streams audio" "HTTPS, byte ranges"
-        web -> cdn "Streams audio" "HTTPS, byte ranges"
-        admin -> cdn "Previews audio" "HTTPS, byte ranges"
-        cdn -> storage "Fetches audio" "HTTPS, private origin"
-        cdn -> api "Forwards API traffic" "HTTPS"
+        mobile -> edge "Calls the API" "HTTPS, JSON"
+        web -> edge "Calls the API" "HTTPS, JSON"
+        admin -> edge "Calls the API" "HTTPS, JSON"
+        edge -> api "Forwards filtered traffic" "HTTPS"
+        mobile -> mediaCdn "Streams and downloads audio" "HTTPS, byte ranges"
+        web -> mediaCdn "Streams audio" "HTTPS, byte ranges"
+        admin -> mediaCdn "Previews audio" "HTTPS, byte ranges"
+        mediaCdn -> storage "Fetches audio on a cache miss" "HTTPS, private origin"
+        radioListeners -> mediaCdn "Listen to the live stream" "HTTPS, audio stream"
+        mediaCdn -> playout "Pulls the live stream" "HTTPS"
 
         api -> db "Reads and writes" "SQL (Prisma)"
         api -> searchengine "Queries" "HTTPS"
         api -> cache "Caches, rate limits" "Redis protocol"
         api -> storage "Creates upload and playback URLs" "S3 API"
-        api -> monitor "Sends errors" "HTTPS"
+        api -> errors "Sends errors" "HTTPS"
 
         workers -> db "Takes jobs, reads and writes" "SQL (pg-boss, Prisma)"
         workers -> searchengine "Indexes published content" "HTTPS"
         workers -> storage "Reads and writes audio" "S3 API"
         workers -> push "Sends notifications" "HTTPS"
         workers -> mail "Sends email" "HTTPS"
-        workers -> monitor "Sends errors" "HTTPS"
+        workers -> errors "Sends errors" "HTTPS"
+        mobile -> errors "Sends crash and error reports" "HTTPS"
+        web -> errors "Sends error reports" "HTTPS"
+        admin -> errors "Sends error reports" "HTTPS"
+        monitoring -> api "Collects metrics, checks uptime" "HTTPS"
+        monitoring -> workers "Collects metrics" "HTTPS"
+        monitoring -> db "Collects metrics" "SQL"
+        monitoring -> searchengine "Collects metrics" "HTTPS"
 
         playout -> api "Reads radio schedule" "HTTPS"
         playout -> storage "Reads published audio" "S3 API"
@@ -148,6 +161,18 @@ workspace "Noor in the Prophetic Sunnah" "C4 model: levels 1 to 3. Source of tru
             }
             element "Optional" {
                 border Dashed
+            }
+            element "Edge" {
+                shape Hexagon
+            }
+            element "Managed" {
+                background #2e7d6b
+                color #ffffff
+                border Dashed
+            }
+            element "Monitoring" {
+                background #6b5b95
+                color #ffffff
             }
             element "External" {
                 background #999999

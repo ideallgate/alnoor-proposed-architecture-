@@ -11,7 +11,7 @@ Section 5 requires, at a minimum: vocalized and unvocalized search, hamza differ
 Two of these cannot be settled by engineering alone: the ta marbuta/ha rule is defined by an algorithm the First Party must approve, and the scholarly ranking criteria are theirs to define.
 
 ## Options considered
-Measured in Docker on one Apple M1 laptop, each engine capped at 2 CPUs and 2 GiB, on 46,769 vocalized hadith records from a public corpus (Jaguar16/open-hadith-data v1.1.0). Normalization was tested with 2,000 phrase queries per variant. Latency was tested on the real corpus and on synthetic 10x and 50x copies. Full tables and limits are in the benchmark report.
+Measured in Docker on one Apple M1 laptop, each engine capped at 2 CPUs and 2 GiB, on 46,769 vocalized hadith records from a public open hadith dataset (v1.1.0, extracted from sunnah.com). Normalization was tested with 2,000 phrase queries per variant. Latency was tested on the real corpus and on synthetic 10x and 50x copies. Full tables and limits are in the benchmark report.
 
 | | OpenSearch 3.9 | Meilisearch 1.55 | PostgreSQL 16 full-text |
 |---|---|---|---|

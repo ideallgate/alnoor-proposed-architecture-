@@ -1,5 +1,7 @@
 # C4 diagrams
 
+Prepared by IdeallCo Company.
+
 Two versions are kept on purpose:
 
 - **Structurizr (source of truth):** `workspace.dsl`, levels 1 to 3 from one model. Open it with Structurizr Lite or the Structurizr CLI, which can export PNG or SVG.

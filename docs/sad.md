@@ -1,6 +1,6 @@
 # Software Architecture Document: Noor in the Prophetic Sunnah
 
-Status: draft for review by the First Party. Decisions are recorded in [docs/adr](adr/README.md). Diagrams are in [docs/c4](c4/README.md).
+Prepared by IdeallCo Company. Status: draft for review by the First Party. Decisions are recorded in [docs/adr](adr/README.md). Diagrams are in [docs/c4](c4/README.md).
 
 ## 1. Introduction and goals
 Scope from Annex Section 1: iOS and Android apps, a responsive web platform, an Arabic admin dashboard, backend and APIs, the scholarly content model, Arabic search, audio storage and processing, an audio sync tool, plans and review, notifications, Radio Noor, reports, infrastructure, backup and monitoring.
@@ -11,14 +11,16 @@ Delivery: five months in five phases (Annex 23). Phase to decision mapping:
 
 | Phase | Architecture decisions it relies on |
 |---|---|
-| 1 Foundation and first prototype | ADR-001, 002, 003, 009, 010, 011, 015, 016, 024 |
+| 1 Foundation and first prototype | ADR-001, 002, 003, 009, 010, 011, 015, 016, 024, 025 |
 | 2 Content, admin, search | ADR-004, 005, 006, 007, 008, 013, 019 (manual tool), 020 |
 | 3 Apps, audio, plans | ADR-016, 018, 019, 021, 022 |
 | 4 Web, radio, reports | ADR-014, 017, 023 |
-| 5 Test, launch, handover | ADR-015, 020, 024, performance and restore tests |
+| 5 Test, launch, handover | ADR-015, 020, 024, 025, performance and restore tests |
 
 ## 2. Constraints
 Business and delivery rules that shape the design: the functional scope (Sections 1-16), capacity and quality targets (Section 18), the approval cycle and versioning rules (Sections 3, 15), security and privacy (Section 20), the 5-month schedule, the 12-month warranty, code in First Party repositories from day one, no use of project content to train AI or in unapproved external services (Section 28), and handover without dependence on the Executor (Sections 24, 26).
+
+The platform is for a Saudi Arabian First Party and is hosted in Riyadh. The audience is Muslims worldwide, so audio delivery is global. The Saudi PDPL is the working baseline for privacy and data location, to be confirmed by the First Party's counsel.
 
 Technology is the Executor's selection, recorded in the decisions below. Where it differs from the technology list in Annex Section 17, it appears in the deviation register.
 
@@ -32,17 +34,17 @@ Technology is the Executor's selection, recorded in the decisions below. Where i
 ### External services needing First Party approval (Annex 34)
 | Service | Purpose | Decision |
 |---|---|---|
-| Hosting provider, CDN, WAF, object storage | Run the platform | [ADR-015](adr/ADR-015-hosting-and-infrastructure.md), [ADR-018](adr/ADR-018-audio-storage-and-delivery.md) |
+| Hosting provider and region (Riyadh), object storage | Run the platform | [ADR-015](adr/ADR-015-hosting-and-infrastructure.md), [ADR-018](adr/ADR-018-audio-storage-and-delivery.md) |
+| CDN vendor (to be selected) | Global delivery of audio and static media | [ADR-025](adr/ADR-025-edge-waf-and-cdn.md), [ADR-018](adr/ADR-018-audio-storage-and-delivery.md) |
 | Firebase Cloud Messaging | Push notifications | [ADR-022](adr/ADR-022-notifications.md) |
 | Email service (to be chosen) | Account and notification email | [ADR-022](adr/ADR-022-notifications.md) |
-| Sentry (or equivalent) | Error monitoring | [ADR-023](adr/ADR-023-observability-and-analytics.md) |
-| PostHog (or equivalent) | Product analytics | [ADR-023](adr/ADR-023-observability-and-analytics.md) |
+| GlitchTip (self-hosted, a Sentry-compatible equivalent) | Error monitoring. No outside vendor, but a monitoring host adds hosting cost and the First Party confirms the equivalent. Sentry is the alternative | [ADR-023](adr/ADR-023-observability-and-analytics.md) |
 | Git host and CI service | Repositories and pipelines | [ADR-024](adr/ADR-024-repositories-ci-and-testing.md) |
 
 ## 3. Context and scope (C4 level 1)
-Noor serves three groups of people: beneficiaries (read, search and listen, on iOS, Android and the web), the content team (enter content, upload and sync audio, submit for review) and scholars and approvers (review and approve in the approval cycle). The content team and the scholars both work in the admin dashboard.
+Noor serves three groups of people: beneficiaries (read, search and listen, on iOS, Android and the web), the content team (enter content, upload and sync audio, submit for review) and scholars and approvers (review and approve in the approval cycle). The content team (including administrators) and the scholars both work in the admin dashboard.
 
-External systems: Apple and Google push services, an email service, a CDN and WAF, and monitoring and analytics services. Diagram: [C4 level 1](c4/01-context.md), and in the Structurizr model [workspace.dsl](c4/workspace.dsl).
+The content team's administrators manage users, radio and reports in the same dashboard. If the First Party chooses Radio Option B, third-party radio listeners can also listen to a live stream. The only external systems are Apple and Google push services and an email service (to be chosen). The edge, the audio CDN and the monitoring stack are part of the platform, because we operate or select them. Diagram: [C4 level 1](c4/01-context.md), and in the Structurizr model [workspace.dsl](c4/workspace.dsl).
 
 Boundaries: the platform does not host the First Party's other products, does not connect to payment systems, and does not send content to external AI services (Section 28).
 
@@ -59,6 +61,7 @@ Boundaries: the platform does not host the First Party's other products, does no
 | Arabic search engine: OpenSearch | [ADR-013](adr/ADR-013-arabic-search.md) |
 | Radio Noor: scheduled core, in-app baseline, optional live stream | [ADR-014](adr/ADR-014-radio-noor.md) |
 | Hosting: Ubuntu hosts, Docker Compose first, Kubernetes later | [ADR-015](adr/ADR-015-hosting-and-infrastructure.md) |
+| Edge: self-hosted WAF for web and API, global CDN for audio (vendor open) | [ADR-025](adr/ADR-025-edge-waf-and-cdn.md) |
 | Mobile apps: React Native | [ADR-016](adr/ADR-016-mobile-apps.md) |
 | Public web: Next.js | [ADR-017](adr/ADR-017-public-web.md) |
 | Audio storage and delivery | [ADR-018](adr/ADR-018-audio-storage-and-delivery.md) |
@@ -82,6 +85,8 @@ Diagrams: [level 2](c4/02-containers.md), [level 3](c4/03-api-components.md), an
 ### Containers (level 2)
 | Container | Responsibility | Technology | Decision |
 |---|---|---|---|
+| Edge (WAF and reverse proxy) | TLS, WAF rules, rate limits and routing for web and API traffic, in Riyadh | BunkerWeb (Nginx, ModSecurity, OWASP CRS) | ADR-025 |
+| Media CDN (vendor open) | Global delivery of audio and static media from the private origin, signed URLs | Managed CDN, selected with the First Party | ADR-025, 018 |
 | Mobile apps | Library, search, audio with synced text, offline, plans, radio | React Native | ADR-016 |
 | Public web app | Same for the web, SEO, direct links | Next.js | ADR-017 |
 | Admin dashboard | Content, audio sync, approval, plans, radio, reports | React | ADR-011 |
@@ -92,6 +97,8 @@ Diagrams: [level 2](c4/02-containers.md), [level 3](c4/03-api-components.md), an
 | Cache | Cache and rate limiting only | Redis | ADR-012 |
 | Audio storage | Originals and processed audio | S3-compatible | ADR-018 |
 | Radio playout (optional) | Live stream if the First Party chooses Option B | Liquidsoap, Icecast | ADR-014 |
+| Infrastructure monitoring | Resource, uptime and cost dashboards and alerts, on a separate host | Grafana, Uptime Kuma | ADR-023 |
+| Error monitoring | Errors and crash reports from apps, web, API and workers | GlitchTip (self-hosted); Sentry is the alternative | ADR-023 |
 
 ### API modules (level 3)
 | Module | Responsibility |
@@ -173,7 +180,7 @@ The schedule is computed from the playlist plus server time, so all listeners he
 App sends the query to the API. The Search module normalizes the query with the same analyzer chain as the index, queries OpenSearch, and returns hits with highlights mapped to the original vocalized text. The result links to content by ID (ADR-013).
 
 ## 7. Deployment view
-Ubuntu LTS hosts running Docker Compose; separate application, worker, database and search hosts; object storage and CDN; backups in a separate location. Provider and region are set with the First Party. See [ADR-015](adr/ADR-015-hosting-and-infrastructure.md).
+Ubuntu LTS hosts in Riyadh running Docker Compose; separate application (with the edge), worker, database, search and monitoring hosts; object storage; a managed CDN for audio, vendor to be selected; backups in a separate location. Provider and region are set with the First Party. See [ADR-015](adr/ADR-015-hosting-and-infrastructure.md).
 
 | Environment | Purpose | Notes |
 |---|---|---|
@@ -192,9 +199,10 @@ Ubuntu LTS hosts running Docker Compose; separate application, worker, database 
 | API contract | Zod schemas generate validation and OpenAPI; contract checked in CI; versioned by path | ADR-008, 021 |
 | Background work | Transactional enqueue, retries, idempotent handlers, dedicated queue for timed notifications | ADR-012 |
 | Offline and sync | Local-first user data, merge rules per record type, content version checks for downloads | ADR-021 |
-| Observability | Error monitoring, metrics, uptime checks, structured logs, alerts | ADR-023 |
+| Observability | GlitchTip for errors, Grafana and Uptime Kuma for metrics and uptime, structured logs, alerts; own events table for reports | ADR-023 |
+| Edge protection | Self-hosted WAF and rate limits for web and API; signed URLs and rate rules for media; no third party terminates TLS for login or API traffic | ADR-025 |
 | Backup and restore | Daily database backup, WAL archive, separate location, quarterly restore test | ADR-015 |
-| Privacy | Collect only what sync needs; no sensitive data in analytics; no content to external AI services | ADR-020, 023 |
+| Privacy | Collect only what sync needs; no sensitive data in error reports or events; no content to external AI services; Saudi PDPL as the working baseline | ADR-020, 023 |
 | Configuration and secrets | Environment variables or a secrets manager; never in repositories or front-ends | ADR-020, 024 |
 | Accessibility and RTL | VoiceOver, TalkBack, system font scaling, RTL in all clients, tested every release | ADR-016, 017 |
 | Testing | Critical paths named in Annex 24 are automated; Arabic search cases are regression tests | ADR-024 |
@@ -203,9 +211,9 @@ Ubuntu LTS hosts running Docker Compose; separate application, worker, database 
 | Target (Annex 18) | How the design addresses it | How it is verified |
 |---|---|---|
 | 1,500 concurrent sessions | Stateless API replicas, CDN for audio, cache for read models, workers separate | Load test in Phase 5 on a production-like environment |
-| API p95 under 500 ms | Read models, caching, indexes, async heavy work | Load test, with the typical-request mix agreed with the First Party |
+| API p95 under 500 ms | Read models, caching, indexes, async heavy work | Load test, with the typical-request mix agreed with the First Party, from several regions because the API is in Riyadh |
 | Hadith screen under 1 s | Published-only read model, cache, small payloads | Measured on device in the test environment |
-| Audio start under 2 s on 4G | CDN, range requests, compressed streaming format | Measured on real devices and networks |
+| Audio start under 2 s on 4G | Global CDN for audio, range requests, compressed streaming format | Measured on real devices and networks, in Saudi Arabia and in at least two other regions |
 | Search under 1 s | OpenSearch with custom analyzers; real-corpus benchmark p99 under 120 ms at 50 concurrent requests, on one laptop | Re-run on the First Party's corpus and the production hosts |
 | Availability 99.5% monthly | Scripted rebuild and restore, monitoring and alerts; second host behind a load balancer if needed | Uptime monitoring, restore test |
 | App size around 50 MB | Tracked from the first build | Build reports |
@@ -221,12 +229,16 @@ The benchmark figures in the ADRs come from a single laptop and are evidence for
 | ADR-001 and the other deviations need the First Party's written approval | Contract risk (Annex 17) | Present the deviation register with the benchmark evidence; record the confirmation date and channel |
 | Benchmark evidence comes from a single laptop; the search benchmark is incomplete | Sizing and performance claims may not hold | Production-like load tests before acceptance; re-run search benchmark on the real corpus |
 | Search ranking and the ta marbuta/ha rule need scholar approval | Phase 2 acceptance depends on it | Schedule the scholar review early with the review pack ([ADR-013](adr/ADR-013-arabic-search.md)) |
-| Hosting country, region and provider; data location under PDPL | May limit provider choice | First Party decision; list how Section 19 items are provided on the chosen provider |
+| Hosting provider and region in Riyadh; whether personal data must stay in the Kingdom under the Saudi PDPL (our sources disagree) | May limit provider choice and the CDN and monitoring options | First Party decision with their counsel; list how Section 19 items are provided on the chosen provider |
+| CDN vendor not selected; audience size and budget unknown | Audio start time and cost for listeners abroad | Ask for expected listeners by region and monthly hours, then request quotes ([ADR-025](adr/ADR-025-edge-waf-and-cdn.md)) |
+| Self-hosted WAF rules cause false positives on Arabic search or API traffic | Blocked legitimate users | Start in detection-only mode, test with Arabic queries, tune before blocking ([ADR-025](adr/ADR-025-edge-waf-and-cdn.md)) |
+| Web and API calls from far away reach Riyadh directly | Higher latency for listeners abroad; API target at risk | Measure from several regions in Phase 5; add public-page caching or a second region if needed |
+| GlitchTip is an equivalent, not Sentry itself; its mobile SDK behaviour is unproven | Error monitoring gaps | First Party confirms the equivalent; Phase 1 test errors from every app; Sentry is the fallback ([ADR-023](adr/ADR-023-observability-and-analytics.md)) |
 | A single host per role gives no automatic failover | 99.5% depends on fast rebuild and restore | Demonstrate in restore and performance tests; add a second application host if needed |
 | Vocalized Arabic rendering, background audio and offline downloads in React Native | Fail in the Phase 1 prototype would change the mobile decision | Prove in Phase 1; fall back to Flutter, which the annex names ([ADR-016](adr/ADR-016-mobile-apps.md)) |
 | Word-level audio sync is not guaranteed | Annex 7 says "when possible" | Manual tool is the baseline; evaluate self-hosted alignment on real audio ([ADR-019](adr/ADR-019-audio-pipeline-and-alignment.md)) |
 | Real audio and text samples arrive late | Pipeline and alignment tests slip | Ask the First Party for samples in Phase 1 |
-| External services needing approval (Firebase, email, Sentry, analytics, CDN and WAF) | Delay or deviation from Annex 34 | Send one approval request with names, purpose, cost model and alternatives |
+| External services needing approval (hosting, CDN vendor, Firebase, email, monitoring host cost) | Delay or deviation from Annex 34 | Send one approval request with names, purpose, cost model and alternatives |
 | Existing components of the Executor used in the project | Annex 27 requires advance disclosure and a licence | List them before development starts |
 | Radio live stream (Option B) requested late | Schedule and cost impact | Agree the choice early ([ADR-014](adr/ADR-014-radio-noor.md)) |
 | Corpus used in benchmarks has unverified redistribution rights | Cannot be shared or published | Kept local, not in the repository; ask the First Party for a real sample |
