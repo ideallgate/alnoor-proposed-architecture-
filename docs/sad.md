@@ -31,6 +31,7 @@ _To be added in chunk 8._
 | Admin dashboard: React | [ADR-011](adr/ADR-011-admin-dashboard-react.md) |
 | Background jobs: pg-boss on PostgreSQL | [ADR-012](adr/ADR-012-background-jobs.md) |
 | Arabic search engine (provisional) | [ADR-013](adr/ADR-013-arabic-search.md) |
+| Radio Noor: scheduled core, in-app baseline, optional live stream | [ADR-014](adr/ADR-014-radio-noor.md) |
 | Content versioning | [ADR-004](adr/ADR-004-content-versioning.md) |
 | Text anchors | [ADR-005](adr/ADR-005-text-anchors.md) |
 | Classification trees | [ADR-006](adr/ADR-006-classification-trees.md) |
